@@ -878,6 +878,13 @@ ifeq ($(strip $(JOYSTICK_ENABLE)), yes)
     endif
 endif
 
+ifeq ($(strip $(APPLE_FN_ENABLE)), yes)
+    ifeq ($(strip $(EXTRAKEY_ENABLE)), no)
+        $(error APPLE_FN_ENABLE requires EXTRAKEY_ENABLE)
+    endif
+    OPT_DEFS += -DAPPLE_FN_ENABLE
+endif
+
 USBPD_ENABLE ?= no
 VALID_USBPD_DRIVER_TYPES = custom vendor
 USBPD_DRIVER ?= vendor

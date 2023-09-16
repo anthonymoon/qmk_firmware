@@ -50,3 +50,5 @@ void bluetooth_send_mouse(report_mouse_t *report);
  * \param usage The consumer usage to send.
  */
 void bluetooth_send_consumer(uint16_t usage);
+
+void bluetooth_send_apple(bool pressed, uint8_t usageIndex);

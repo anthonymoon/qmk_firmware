@@ -321,6 +321,46 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM SharedReport[] = {
         HID_RI_REPORT_SIZE(8, 16),
         HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_ARRAY | HID_IOF_ABSOLUTE),
     HID_RI_END_COLLECTION(0),
+
+#    ifdef APPLE_FN_ENABLE
+    // see
+    // https://github.com/apple-oss-distributions/IOHIDFamily/blob/1ca71a23b43de09cb3968515586840eacf817445/IOHIDFamily/IOHIDEventDriver.cpp#L2342
+    // https://mybyways.com/blog/script-to-re-map-macbook-pro-function-keys
+    // https://github.com/pqrs-org/Karabiner-VirtualHIDDevice/blob/master/src/VirtualHIDKeyboard/VirtualHIDKeyboard.cpp
+    HID_RI_USAGE_PAGE(16, 0xff00),     // Usage Page kHIDPage_AppleVendor)
+    HID_RI_USAGE(8, 0x01),             // Usage 1
+    HID_RI_COLLECTION(8, 0x01),        // Application
+        HID_RI_REPORT_ID(8, REPORT_ID_APPLE),
+        // AppleVebdorTopCasePage
+        HID_RI_USAGE_PAGE(8, 0xFF),    // AppleVendor Top Case
+        HID_RI_LOGICAL_MINIMUM(8, 0x0),
+        HID_RI_LOGICAL_MAXIMUM(8, 0x1),
+        HID_RI_USAGE(8, 0x03),         // 0 kHIDUsage_AV_TopCase_KeyboardFn
+        HID_RI_USAGE(8, 0x06),         // 1 kHIDUsage_AV_TopCase_VideoMirror
+        HID_RI_USAGE(8, 0x0A),         // 2 kHIDUsage_AV_TopCase_ClamshellLatched
+        HID_RI_REPORT_COUNT(8, 0x03),
+        HID_RI_REPORT_SIZE(8, 0x01),
+        HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+        // AppleVebdorKeyboardPage
+        HID_RI_USAGE_PAGE(16, 0xFF01),  // kHIDPage_AppleVendorKeyboard
+        HID_RI_LOGICAL_MINIMUM(8, 0x0),
+        HID_RI_LOGICAL_MAXIMUM(8, 0x1),
+        HID_RI_USAGE(8, 0x01),          // 3 kHIDUsage_AppleVendorKeyboard_Spotlight
+        HID_RI_USAGE(8, 0x02),          // 4 kHIDUsage_AppleVendorKeyboard_Dashboard
+        HID_RI_USAGE(8, 0x03),          // 5 kHIDUsage_AppleVendorKeyboard_Function
+        HID_RI_USAGE(8, 0x04),          // 6 kHIDUsage_AppleVendorKeyboard_Launchpad
+        HID_RI_USAGE(8, 0x10),          // 7 kHIDUsage_AppleVendorKeyboard_Expose_All
+        HID_RI_USAGE(8, 0x11),          // 8 kHIDUsage_AppleVendorKeyboard_Expose_Desktop
+        HID_RI_USAGE(8, 0x30),          // 9 kHIDUsage_AppleVendorKeyboard_Language
+        HID_RI_REPORT_COUNT(8, 0x07),
+        HID_RI_REPORT_SIZE(8, 0x01),
+        HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+        // Reserved (6bits)
+        HID_RI_REPORT_COUNT(8, 0x06),
+        HID_RI_REPORT_SIZE(8, 0x01),
+        HID_RI_INPUT(8, HID_IOF_CONSTANT),
+    HID_RI_END_COLLECTION(0),
+#    endif
 #endif
 
 #ifdef PROGRAMMABLE_BUTTON_ENABLE

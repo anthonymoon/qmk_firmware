@@ -43,6 +43,7 @@ extern keymap_config_t keymap_config;
 static host_driver_t *driver;
 static uint16_t       last_system_usage   = 0;
 static uint16_t       last_consumer_usage = 0;
+static uint16_t       last_apple_usages   = 0;
 
 void host_set_driver(host_driver_t *d) {
     driver = d;
@@ -159,6 +160,28 @@ void host_consumer_send(uint16_t usage) {
     (*driver->send_extra)(&report);
 }
 
+void host_apple_send(bool pressed, uint8_t usageIndex) {
+    uint16_t usage_mask = 1 << usageIndex;
+    uint16_t usages   = pressed ? (last_apple_usages | usage_mask) : (last_apple_usages & ~usage_mask);
+    if (usages == last_apple_usages) return;
+    last_apple_usages = usages;
+
+#ifdef BLUETOOTH_ENABLE
+    if (where_to_send() == OUTPUT_BLUETOOTH) {
+        bluetooth_send_apple_fn(pressed, usageIndex);
+        return;
+    }
+#endif
+
+    if (!driver) return;
+
+    report_extra_t report = {
+        .report_id = REPORT_ID_APPLE,
+        .usage = usages
+    };
+    (*driver->send_extra)(&report);
+}
+
 #ifdef JOYSTICK_ENABLE
 void host_joystick_send(joystick_t *joystick) {
     if (!driver) return;
@@ -252,4 +275,8 @@ uint16_t host_last_system_usage(void) {
 
 uint16_t host_last_consumer_usage(void) {
     return last_consumer_usage;
+}
+
+bool host_apple_is_pressed(uint16_t usage_mask) {
+    return (last_apple_usages & usage_mask) != 0;
 }

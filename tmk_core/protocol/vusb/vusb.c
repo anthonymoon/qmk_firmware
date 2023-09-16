@@ -542,6 +542,46 @@ const PROGMEM uchar shared_hid_report[] = {
     0x75, 0x10,               //   Report Size (16)
     0x81, 0x00,               //   Input (Data, Array, Absolute)
     0xC0,                     // End Collection
+
+#    ifdef APPLE_FN_ENABLE
+    // see
+    // https://github.com/apple-oss-distributions/IOHIDFamily/blob/1ca71a23b43de09cb3968515586840eacf817445/IOHIDFamily/IOHIDEventDriver.cpp#L2342
+    // https://mybyways.com/blog/script-to-re-map-macbook-pro-function-keys
+    // https://github.com/pqrs-org/Karabiner-VirtualHIDDevice/blob/master/src/VirtualHIDKeyboard/VirtualHIDKeyboard.cpp
+    0x06, 0x00, 0xFF,      // Usage Page (kHIDPage_AppleVendor)
+    0x09, 0x01,            // Usage 1
+    0xA1, 0x01,            // Collection (Application)
+    0x85, REPORT_ID_APPLE, //   Report ID
+    // Apple Vendor Top Case Page
+    0x05, 0xFF,            //   Usage Page (AppleVendor Top Case)
+    0x15, 0x00,            //   Logical Minimum (0)
+    0x25, 0x01,            //   Logical Maximum (1)
+    0x09, 0x03,            //   Usage (KeyboardFn) index 0
+    0x09, 0x06,            //   Usage (VideoMirror) index 1
+    0x09, 0x0A,            //   Usage (ClamshellLatched) index 2
+    0x95, 0x03,            //   Report Count (3)
+    0x75, 0x01,            //   Report Size (1)
+    0x81, 0x02,            //   Input (Data, Variable, Absolute)
+    // Apple Vendor Keyboard Page
+    0x06, 0x01, 0xFF,      //   Usage Page (kHIDPage_AppleVendorKeyboard)
+    0x15, 0x00,            //   Logical Minimum (0)
+    0x25, 0x01,            //   Logical Maximum (1)
+    0x09, 0x01,            //   Usage (kHIDUsage_AppleVendorKeyboard_Spotlight) index 3
+    0x09, 0x02,            //   Usage (kHIDUsage_AppleVendorKeyboard_Dashboard) index 4
+    0x09, 0x03,            //   Usage (kHIDUsage_AppleVendorKeyboard_Function) index 5
+    0x09, 0x04,            //   Usage (kHIDUsage_AppleVendorKeyboard_Launchpad) index 6
+    0x09, 0x10,            //   Usage (kHIDUsage_AppleVendorKeyboard_Expose_All) index 7
+    0x09, 0x11,            //   Usage (kHIDUsage_AppleVendorKeyboard_Expose_Desktop) index 8
+    0x09, 0x30,            //   Usage (kHIDUsage_AppleVendorKeyboard_Expose_Language) index 9
+    0x95, 0x07,            //   Report Count (7)
+    0x75, 0x01,            //   Report Size (1)
+    0x81, 0x02,            //   Input (Data, Variable, Absolute)
+    // Reserved (6bits)
+    0x95, 0x06,            //   Report Count (6)
+    0x75, 0x01,            //   Report Size (1)
+    0x81, 0x03,            //   Input (Constant)
+    0xC0,                  // End Collection
+#    endif
 #endif
 
 #ifdef JOYSTICK_ENABLE

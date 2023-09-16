@@ -60,3 +60,7 @@ void bluetooth_send_consumer(uint16_t usage) {
     rn42_send_consumer(usage);
 #endif
 }
+
+void bluetooth_send_apple(bool pressed, uint8_t usageIndex);
+// TODO not implemented yet
+}

@@ -44,10 +44,12 @@ void    host_keyboard_send(report_keyboard_t *report);
 void    host_mouse_send(report_mouse_t *report);
 void    host_system_send(uint16_t usage);
 void    host_consumer_send(uint16_t usage);
+void    host_apple_send(bool pressed, uint8_t usageIndex);
 void    host_programmable_button_send(uint32_t data);
 
 uint16_t host_last_system_usage(void);
 uint16_t host_last_consumer_usage(void);
+bool     host_apple_is_pressed(uint16_t usage_mask);
 
 #ifdef __cplusplus
 }
